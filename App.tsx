@@ -42,14 +42,33 @@ const App: React.FC = () => {
     const loadedInvoices = localStorage.getItem('invoices');
     const loadedSettings = localStorage.getItem('settings');
 
-    if (loadedProducts) setProducts(JSON.parse(loadedProducts));
-    if (loadedInvoices) setInvoices(JSON.parse(loadedInvoices));
-    if (loadedSettings) setSettings(JSON.parse(loadedSettings));
+    if (loadedProducts) {
+      setProducts(JSON.parse(loadedProducts));
+    } else {
+      // --- بيانات افتراضية تظهر عند فتح التطبيق لأول مرة (لحل مشكلة Vercel) ---
+      setProducts([
+        { id: '1', name: 'بيبسي كنز', price: 15, barcode: '111111' },
+        { id: '2', name: 'شيبسي عائلي', price: 25, barcode: '222222' },
+        { id: '3', name: 'مياه معدنية صغير', price: 7, barcode: '333333' },
+        { id: '4', name: 'شوكولاتة جالاكسي', price: 35, barcode: '444444' },
+        { id: '5', name: 'عصير جهينة', price: 10, barcode: '555555' },
+      ]);
+    }
+
+    if (loadedInvoices) {
+      setInvoices(JSON.parse(loadedInvoices));
+    }
+
+    if (loadedSettings) {
+      setSettings(JSON.parse(loadedSettings));
+    }
   }, []);
 
   // Save Data on Change
   useEffect(() => {
-    localStorage.setItem('products', JSON.stringify(products));
+    if (products.length > 0) {
+      localStorage.setItem('products', JSON.stringify(products));
+    }
   }, [products]);
 
   useEffect(() => {
